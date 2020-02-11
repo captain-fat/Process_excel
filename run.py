@@ -17,8 +17,8 @@ class mymainwindow(QMainWindow, Ui_MainWindow):
 
 
     def display(self):
-        self.keywords_display.setText('默认为：\n 温州,台州,杭州,宁波,信阳,驻马店,合肥,阜阳,南昌')
-        self.columns_display.setText('默认为：从何地返苏？（一直在苏填“无”）,有无重点地区关联史（含往返、途经、接触）？,籍贯')
+        self.keywords_display.setText('温州,台州,杭州,宁波,信阳,驻马店,合肥,阜阳,南昌')
+        self.columns_display.setText('从何地返苏？（一直在苏填“无”）,有无重点地区关联史（含往返、途经、接触）？,籍贯')
 
 
     def readfile_(self):
