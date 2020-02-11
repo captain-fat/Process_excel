@@ -1,1 +1,1 @@
-This is a software to process the excel file.
+This is a software to process the excel file. To help process the excel file.
