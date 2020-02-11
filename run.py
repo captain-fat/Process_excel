@@ -1,8 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 from test_ui import Ui_MainWindow
 import pandas as pd
 import mark
+import os
 
 class mymainwindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
@@ -58,6 +59,12 @@ class mymainwindow(QMainWindow, Ui_MainWindow):
                         self.df[column_get[k]][i] = self.df[column_get[k]][i] + '+注意'
         filename_out = 'processed.xlsx'
         self.df.to_excel(filename_out, index=False)
+        if os.path.isfile(filename_out):
+            QMessageBox.information(self, "结果", "处理成功",
+                                    QMessageBox.Yes)
+        else:
+            QMessageBox.information(self, "结果", "处理失败",
+                                    QMessageBox.yes)
 
 
 
