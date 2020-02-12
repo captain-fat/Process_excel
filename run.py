@@ -1,6 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QDialog, QGroupBox, QGridLayout, QCheckBox
-from test_ui import Ui_MainWindow, Ui_Dialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox, QDialog
+from PyQt5 import QtWidgets, QtCore
+from mainwindow import Ui_MainWindow
+from dialog import Ui_Dialog
 import pandas as pd
 import mark
 import os
@@ -14,7 +16,8 @@ class mymainwindow(QMainWindow, Ui_MainWindow):
         self.bt_openfile.clicked.connect(self.btn_file_open)
         self.bt_opendatabase.clicked.connect(self.btn_database_open)
         self.bt_readdatabase.clicked.connect(self.btn_database_read)
-        #self.bt_read_columns.clicked.connect(self.btn_read_columns)
+        self.bt_read_columns.clicked.connect(self.btn_read_columns_)
+        #self.bt_read_columns.clicked.connect(self.dis_read_columns())
         self.start.clicked.connect(self.run_)
 
     #根据输入的文件名读取excel作为df
@@ -45,20 +48,20 @@ class mymainwindow(QMainWindow, Ui_MainWindow):
         show_keywords = " ".join(str(i) for i in self.keywords_get)
         self.keywords_display.setText(show_keywords)
 
-    #读取DF中的列明并显示在文本框中
-    def btn_read_columns(self):
-        columns = self.list_
+    #读取选中的字段并显示在文本框中
+    def dis_read_columns(self):
+        columns = self.mywidget.checklist
         column = "\n".join(str(i) for i in columns)
         print(column)
         self.columns_display.setText(column)
 
+    #直接访问另一个类，实现字段的选择
+    def btn_read_columns_(self):
+        self.mywidget = mywidget(self.list_)
+        self.mywidget.show()
     #程序运行按钮，根绝关键词文本框，在特定列中查找，若含有这些关键词，则在该单元格文本后添加"+注意"，最后保存在当前目录下
     def run_(self):
-        self.columns_get = self.columns.toPlainText()
-        column_get = self.columns_get.split(',')
-        if self.columns_get == '':
-            column_get = ['从何地返苏？（一直在苏填“无”）', '有无重点地区关联史（含往返、途经、接触）？', '籍贯']
-            print(column_get)
+        column_get = self.mywidget.checklist
         for i in range(len(self.df)):
             for k in range(len(column_get)):
                 for j in range(len(self.keywords_get)):
@@ -74,35 +77,43 @@ class mymainwindow(QMainWindow, Ui_MainWindow):
                                     QMessageBox.yes)
 
 #添加对话框，实现对读取DF的列进行动态选择
-class mydialog(QDialog, Ui_Dialog):
-    def __init__(self):
+class mywidget(QtWidgets.QWidget):
+    def __init__(self, column):
         super().__init__()
+        layout = QtWidgets.QVBoxLayout()
+        columns = column
+        id_ = range(len(columns))
+        for id_, text in zip(id_, columns):
+            checkBox = QtWidgets.QCheckBox(text, self)
+            checkBox.id_ = id_
+            checkBox.stateChanged.connect(self.checkcheck)
+            layout.addWidget(checkBox)
+        self.checklist = []
+        print(columns)
+        self.bottom = QtWidgets.QPushButton('确定')
+        layout.addWidget(self.bottom)
 
-        self.columns = ['q','q','w','q']
-        self.setupUi(self)
+        self.bottom.clicked.connect(self.confirm)
+        self.bottom.clicked.connect(self.close)
+        self.setLayout(layout)
 
-    def initUI(self):
-        len_list = len(self.columns)
-        position_list = [[i, j] for i in range(int(len_list)/4 +1) for j in range(4)]
-        pGroupBox = QGroupBox(u"游戏选择")
-        pGrid = QGridLayout()
-        print("dir(pGrid) %s" % dir(pGrid))
-        pGrid.setSpacing(10)
 
-        for position_list, columns in zip(position_list, self.columns):
-            print("sGame %s" % columns)
-            pCheck = QCheckBox(columns)
-            pGrid.addWidget(pCheck, position_list[0], columns[1])
-            pCheck.stateChanged.connect(lambda: self.__onCheck(columns))
+    def checkcheck(self, state):
+        checkbox = self.sender()
+        if state == QtCore.Qt.Checked:
+            if checkbox.text() not in self.checklist:
+                self.checklist.append(checkbox.text())
+        if state == QtCore.Qt.Unchecked:
+            if checkbox.text() in self.checklist:
+                self.checklist.remove(checkbox.text())
 
-        pGroupBox.setLayout(pGrid)
-        self.setLayout(pGrid)
+    def confirm(self):
+        if not self.checklist:
+            QMessageBox.critical(self, "错误", "请选择字段")
 
-    def __onCheck(self, value):
-        print("onCheck:value %s" % value)
 
-    def __onGroup(self, value):
-        print("onGroup:value %s" % value)
+
+
 
 
 
@@ -111,8 +122,6 @@ class mydialog(QDialog, Ui_Dialog):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     myWin = mymainwindow()
-    myDia = mydialog()
     myWin.show()
-    myWin.bt_read_columns.clicked.connect(myDia.show)
 
     sys.exit(app.exec())
