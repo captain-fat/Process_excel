@@ -22,9 +22,6 @@ class Ui_MainWindow(object):
         self.keywords = QtWidgets.QTextEdit(self.centralwidget)
         self.keywords.setGeometry(QtCore.QRect(340, 50, 121, 41))
         self.keywords.setObjectName("keywords")
-        self.columns = QtWidgets.QTextEdit(self.centralwidget)
-        self.columns.setGeometry(QtCore.QRect(10, 240, 111, 51))
-        self.columns.setObjectName("columns")
         self.start = QtWidgets.QPushButton(self.centralwidget)
         self.start.setGeometry(QtCore.QRect(540, 270, 91, 41))
         self.start.setObjectName("start")
@@ -32,7 +29,7 @@ class Ui_MainWindow(object):
         self.keywords_display.setGeometry(QtCore.QRect(340, 120, 171, 61))
         self.keywords_display.setObjectName("keywords_display")
         self.columns_display = QtWidgets.QTextBrowser(self.centralwidget)
-        self.columns_display.setGeometry(QtCore.QRect(190, 230, 221, 81))
+        self.columns_display.setGeometry(QtCore.QRect(20, 230, 221, 81))
         self.columns_display.setObjectName("columns_display")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(50, 20, 51, 16))
@@ -59,8 +56,11 @@ class Ui_MainWindow(object):
         self.bt_readdatabase.setGeometry(QtCore.QRect(520, 107, 93, 41))
         self.bt_readdatabase.setObjectName("bt_readdatabase")
         self.bt_read_columns = QtWidgets.QToolButton(self.centralwidget)
-        self.bt_read_columns.setGeometry(QtCore.QRect(430, 240, 91, 41))
+        self.bt_read_columns.setGeometry(QtCore.QRect(260, 250, 91, 41))
         self.bt_read_columns.setObjectName("bt_read_columns")
+        self.addwords = QtWidgets.QTextEdit(self.centralwidget)
+        self.addwords.setGeometry(QtCore.QRect(380, 230, 131, 71))
+        self.addwords.setObjectName("addwords")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 649, 26))
@@ -86,11 +86,6 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\';\"><br /></p></body></html>"))
-        self.columns.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'SimSun\';\"><br /></p></body></html>"))
         self.start.setText(_translate("MainWindow", "开始"))
         self.label.setText(_translate("MainWindow", "文件名"))
         self.label_2.setText(_translate("MainWindow", "关键词"))
@@ -99,4 +94,4 @@ class Ui_MainWindow(object):
         self.bt_openfile.setText(_translate("MainWindow", "打开"))
         self.bt_opendatabase.setText(_translate("MainWindow", "打开数据库"))
         self.bt_readdatabase.setText(_translate("MainWindow", "读取数据库"))
-        self.bt_read_columns.setText(_translate("MainWindow", "读取字段"))
+        self.bt_read_columns.setText(_translate("MainWindow", "选择字段"))
